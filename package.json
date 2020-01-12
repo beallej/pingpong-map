@@ -23,6 +23,5 @@
     "start": "node index.js --experimental-modules",
     "build": "webpack --mode production",
     "heroku-postbuild": "webpack -p"
-  },
-  "type": "module"
+  }
 }
