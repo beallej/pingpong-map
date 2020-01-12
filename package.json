@@ -11,8 +11,5 @@
   "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build --experimental-scope-hoisting --public-url . src/index.html"
-  },
-  "files": [
-    "./src/data/"
-  ]
+  }
 }
