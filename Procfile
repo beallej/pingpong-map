@@ -1,1 +1,1 @@
-web: node ./src/index.js
+web: node --input-type=module ./src/index.js
