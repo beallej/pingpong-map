@@ -1,43 +1,26 @@
 import 'ol/ol.css';
 import {useGeographic} from 'ol/proj';
 import {Map, View, Feature, Overlay} from 'ol/index';
-import {Point} from 'ol/geom';
+import {Point, LineString} from 'ol/geom';
 import {Vector as VectorLayer, Tile as TileLayer} from 'ol/layer';
 import {OSM, Vector as VectorSource} from 'ol/source';
-import {Style, Circle, Fill} from 'ol/style';
+import {Style, Circle, Fill, Stroke, Icon} from 'ol/style';
+let fetch = require('node-fetch');
 
-
-var neo4j = require('neo4j');
-console.log(process.env['GRAPHENEDB_URL']);
-var db = new neo4j.GraphDatabase(process.env['GRAPHENEDB_URL']);
 
 useGeographic();
 
 var place = [2.3522, 48.8556];
-var point = new Point(place);
 
 var map = new Map({
     target: 'map',
     view: new View({
         center: place,
-        zoom: 8
+        zoom: 5
     }),
     layers: [
         new TileLayer({
             source: new OSM()
-        }),
-        new VectorLayer({
-            source: new VectorSource({
-                features: [
-                    new Feature(point)
-                ]
-            }),
-            style: new Style({
-                image: new Circle({
-                    radius: 9,
-                    fill: new Fill({color: 'blue'})
-                })
-            })
         })
     ]
 });
@@ -60,7 +43,7 @@ var info = document.getElementById('info');
 map.on('moveend', function() {
     var view = map.getView();
     var center = view.getCenter();
-    info.innerHTML = formatCoordinate(center);
+    // info.innerHTML = formatCoordinate(center);
 });
 
 map.on('click', function(event) {
@@ -87,36 +70,106 @@ map.on('pointermove', function(event) {
     }
 });
 
+let styleFunction = function(feature) {
+    let geometry = feature.getGeometry();
+    let styles = [
+        new Style({
+            stroke: new Stroke({
+                color: '#ffcc33',
+                width: 2
+            })
+        })
+    ];
 
-// getMapData();
-// async function getMapData(){
-//
-//     db.cypher({
-//         query: "MATCH (n:IP) RETURN n",
-//     }, (err, batchResults) => {
-//         if (batchResults){
-//             console.log("RESULTS - IP", JSON.stringify(batchResults))
-//             batchResults.map((res) => {
-//                 let loc = [res.longitude, res.latitude]
-//                 let layer = new VectorLayer({
-//                     source: new VectorSource({
-//                         features: [
-//                             new Feature(loc)
-//                         ]
-//                     }),
-//                     style: new Style({
-//                         image: new Circle({
-//                             radius: 9,
-//                             fill: new Fill({color: 'blue'})
-//                         })
-//                     })
-//                 });
-//                 map.addLayer(layer)
-//             })
-//         }
-//         if (err){
-//             console.log("ERR", err)
-//         }
-//     });
-//
-// }
+    geometry.forEachSegment(function(start, end) {
+        console.log("seg", start, end)
+        let dx = end[0] - start[0];
+        let dy = end[1] - start[1];
+        let rotation = Math.atan2(dy, dx);
+        // arrows
+        styles.push(new Style({
+            geometry: new Point(end),
+            image: new Icon({
+                src: 'data/arrow.png',
+                anchor: [0.75, 0.5],
+                rotateWithView: true,
+                rotation: -rotation
+            })
+        }));
+    });
+
+    return styles;
+};
+function getMapData(){
+
+
+    fetch('https://aqueous-dusk-24314.herokuapp.com/ip/all').then((response) => {
+        response.json().then((data) => {
+            let features = data.map((res) => {
+                let loc = [res.longitude, res.latitude];
+                return new Feature(new Point(loc))
+            });
+
+            let layer = new VectorLayer({
+                source: new VectorSource({
+                    features: features
+                }),
+                style: new Style({
+                    image: new Circle({
+                        radius: 11,
+                        fill: new Fill({color: 'red'})
+                    })
+                })
+            });
+            map.addLayer(layer)
+
+        })
+    });
+
+    fetch('https://aqueous-dusk-24314.herokuapp.com/traceroute/all').then((response) => {
+
+        response.json().then((data) => {
+            let features = data.map((pingDat) => {
+                let src = pingDat.src.properties;
+                let target = pingDat.target.properties;
+                let ping = [[src.longitude, src.latitude],
+                    [target.longitude, target.latitude]];
+                return  new Feature(new LineString(ping));
+            });
+
+            let layer = new VectorLayer({
+                source: new VectorSource({
+                    features: features
+                }),
+                style: styleFunction
+            });
+            map.addLayer(layer)
+        })
+
+    });
+
+
+    fetch('https://aqueous-dusk-24314.herokuapp.com/ip/intermediate/all').then((response) => {
+        response.json().then((data) => {
+            let features = data.map((res) => {
+                let loc = [res.longitude, res.latitude];
+                return new Feature(new Point(loc))
+            });
+
+            let layer = new VectorLayer({
+                source: new VectorSource({
+                    features: features
+                }),
+                style: new Style({
+                    image: new Circle({
+                        radius: 7,
+                        fill: new Fill({color: 'blue'})
+                    })
+                })
+            });
+            map.addLayer(layer)
+
+        })
+    });
+}
+getMapData();
