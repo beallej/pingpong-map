@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "esm": "^3.2.25",
     "node-fetch": "^2.6.0",
     "ol": "^6.1.1"
   },
