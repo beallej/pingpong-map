@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "node-fetch": "^2.6.0"
-  },
-  "devDependencies": {
+    "node-fetch": "^2.6.0",
     "parcel": "1.11.0"
   },
   "scripts": {
