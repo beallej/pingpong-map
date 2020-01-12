@@ -1,5 +1,5 @@
 // require('ol/ol.css');
-import 'ol/ol.css';
+// import 'ol/ol.css';
 import {useGeographic} from 'ol/proj';
 // let useGeographic = require("ol/proj").useGeographic;
 // let olIndex = require("ol/index");
