@@ -1,1 +1,1 @@
-web: node -r esm --es-module-specifier-resolution=node ./src/index.js
+web: node -r esm ./src/index.js
