@@ -20,8 +20,9 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --mode development --open",
-    "start": "node index.js",
+    "start": "node index.js --experimental-modules",
     "build": "webpack --mode production",
     "heroku-postbuild": "webpack -p"
-  }
+  },
+  "type": "module"
 }
