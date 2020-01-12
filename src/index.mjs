@@ -1,24 +1,25 @@
-require('ol/ol.css');
-// import {useGeographic} from 'ol/proj';
-let useGeographic = require("ol/proj").useGeographic;
-let olIndex = require("ol/index");
-let {Map, View, Feature, Overlay} = olIndex
-// import {Map, View, Feature, Overlay} from 'ol/index';
-let olGeom = require("ol/geom");
-let {Point, LineString} = olGeom;
-// import {Point, LineString} from 'ol/geom';
-let olLayer = require("ol/layer");
-let {Tile} = olLayer;
-let VectorLayer = olLayer.Vector;
-let TileLayer = Tile;
-let olSource = require("ol/source");
-let {OSM, Vector} = olSource;
-let VectorSource = Vector;
-// import {Vector as VectorLayer, Tile as TileLayer} from 'ol/layer';
-// import {OSM, Vector as VectorSource} from 'ol/source';
-let olStyle = require("ol/style");
-let {Style, Circle, Fill, Stroke, Icon} = olStyle;
-// import {Style, Circle, Fill, Stroke, Icon} from 'ol/style';
+// require('ol/ol.css');
+import 'ol/ol.css';
+import {useGeographic} from 'ol/proj';
+// let useGeographic = require("ol/proj").useGeographic;
+// let olIndex = require("ol/index");
+// let {Map, View, Feature, Overlay} = olIndex
+import {Map, View, Feature, Overlay} from 'ol/index';
+// let olGeom = require("ol/geom");
+// let {Point, LineString} = olGeom;
+import {Point, LineString} from 'ol/geom';
+// let olLayer = require("ol/layer");
+// let {Tile} = olLayer;
+// let VectorLayer = olLayer.Vector;
+// let TileLayer = Tile;
+// let olSource = require("ol/source");
+// let {OSM, Vector} = olSource;
+// let VectorSource = Vector;
+import {Vector as VectorLayer, Tile as TileLayer} from 'ol/layer';
+import {OSM, Vector as VectorSource} from 'ol/source';
+// let olStyle = require("ol/style");
+// let {Style, Circle, Fill, Stroke, Icon} = olStyle;
+import {Style, Circle, Fill, Stroke, Icon} from 'ol/style';
 let fetch = require('node-fetch');
 
 
