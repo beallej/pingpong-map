@@ -2,6 +2,7 @@
   "name": "pingpong-map",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "node-fetch": "^2.6.0",
     "ol": "^6.1.1"
@@ -20,9 +21,8 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --mode development --open",
-    "start": "node index.js --experimental-modules",
+    "start": "node --input-type=module index.js",
     "build": "webpack --mode production",
     "heroku-postbuild": "webpack -p"
-  },
-  "type": "module"
+  }
 }
