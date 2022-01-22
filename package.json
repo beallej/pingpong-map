@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "esm": "^3.2.25",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "ol": "^6.1.1",
     "style-loader": "^1.1.2"
   },
